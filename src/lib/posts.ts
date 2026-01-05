@@ -35,7 +35,8 @@ export async function getSortedPostData() {
 }
 
 export async function getPostData(id: string) {
-  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const decodedId = decodeURIComponent(id);
+  const fullPath = path.join(postsDirectory, `${decodedId}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf-8");
   const matterResult = matter(fileContents);
 
