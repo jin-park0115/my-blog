@@ -1,25 +1,30 @@
 import { getSortedPostData } from "@/src/lib/posts";
 import Link from "next/link";
+import Write from "./components/Write";
 
-export default function Home() {
-  const allPostsData = getSortedPostData();
+export default async function Home() {
+  const allPostsData = await getSortedPostData();
+
   return (
-    <main className="p-10">
-      <h1 className="text-3xl font-bold mb-8">내 블로그 글 목록</h1>
-      <ul className="space-y-4">
-        {allPostsData.map(({ id, date, title, description }) => (
-          <li
-            key={id}
-            className="border p-4 rounded-lg hover:bg-gray-50 transition"
+    <>
+      <Write />
+      <div className="bg-red-500 flex items-center h-20 fixed top-0 left-0 right-0 z-50">
+        <p className="flex-1 text-3xl text-center">My-blog</p>
+        <p className="cursor-pointer">글쓰기</p>
+      </div>
+      <div className="mt-24 w-[80%] mx-auto grid grid-cols-2 gap-4">
+        {allPostsData.map((post) => (
+          <Link
+            href={`/posts/${post.id}`}
+            className="border bg-amber-100 p-4"
+            key={post.id}
           >
-            <Link href={`/posts/${id}`}>
-              <small className="text-gray-500">{date}</small>
-              <h2 className="text-xl font-semibold">{title}</h2>
-              <p className="text-gray-600">{description}</p>
-            </Link>
-          </li>
+            <p>{post.title}</p>
+            <p>{post.date}</p>
+            <p>{post.description}</p>
+          </Link>
         ))}
-      </ul>
-    </main>
+      </div>
+    </>
   );
 }
